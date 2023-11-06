@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const User = require('../models/user');
-require('dotenv').config()
 
 router.route('/').get((req, res) => {
     User.findAll()
@@ -17,7 +16,7 @@ router.route('/add').post((req, res) => {
     .catch((error) => console.error(error))
 })
 
-router.route('/login').get((req, res) => {
+router.route('/login').post((req, res) => {
     User.findAndCountAll({
         where: {username: req.body.username, password: req.body.password} 
     })

@@ -1,0 +1,22 @@
+.question-div {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 400px;
+    align-items: center;
+    gap: 25px;
+    border-radius: 3px;
+}
+button {
+    background-color: #f06;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 300px;
+
+    &:hover {
+        background-color: #d05;
+    }
+}
