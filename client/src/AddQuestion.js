@@ -13,6 +13,7 @@ function AddQuestion() {
 
     const submit = async () => {
         const payload = {
+            username: sessionStorage.getItem('username'),
             question: question,
             answer: answer,
             option1: option1,

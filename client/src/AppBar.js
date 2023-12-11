@@ -22,6 +22,7 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={event => navigate('/profile')}
           >
             <MenuIcon />
           </IconButton>

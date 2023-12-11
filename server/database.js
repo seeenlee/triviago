@@ -4,7 +4,7 @@ const Sequelize = require("sequelize");
 var config = {
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
+    // password: process.env.DB_PASS,
 };
 
 if(process.env.NODE_ENV === 'production') {
@@ -15,18 +15,6 @@ else {
   console.log('Running from localhost. Connecting to DB directly.');
   config.host = process.env.DB_HOST;
 }
-
-/*
-let connection = mysql.createConnection(config);
-
-connection.connect(function(err) {
-  if (err) {
-    console.error('Error connecting: ' + err.stack);
-    return;
-  }
-  console.log('Connected as thread id: ' + connection.threadId);
-});
-*/
 
 const sequelize = new Sequelize(
   config.database,
@@ -44,5 +32,6 @@ sequelize.authenticate().then(() => {
   console.error('Unable to connect to the database: ', error);
 });
 
+sequelize.sync();
+
 module.exports = sequelize;
-// module.exports = connection;

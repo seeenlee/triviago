@@ -8,8 +8,12 @@ const bodyParser = require('body-parser')
 app.use(cors())
 app.use(bodyParser.json())
 
-app.use("/question", require("./routes/questionRoute"));
 app.use("/user", require("./routes/userRoute"));
+app.use("/question", require("./routes/questionRoute"));
+app.use("/reaction", require("./routes/reactionRoute"));
+app.use("/result", require("./routes/resultRoute"));
+app.use("/report", require("./routes/reportRoute"));
+
 
 const port = process.env.PORT || 8080;
 

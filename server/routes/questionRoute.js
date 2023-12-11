@@ -1,32 +1,90 @@
 const router = require('express').Router();
-const sequelize = require('../database');
 const Question = require('../models/question');
+const { Op, Sequelize} = require('sequelize');
 
-router.route('/').get((req, res) => {
+router.route('/').post((req, res) => {
     Question.findOne({
-        order: sequelize.random()
+        where: {
+            [Op.and]: [
+                {
+                    id: {
+                        [Op.notIn]: Sequelize.literal(`(
+                            SELECT questionID
+                            FROM Results
+                            WHERE username = :username
+                        )`)
+                    },
+                },
+                {
+                    username: {
+                        [Op.ne]: req.body.username
+                    }
+                }
+            ]
+        },
+        replacements: {username: req.body.username}
     })
     .then((result) => {
-        const package = {
-            question: result.question,
-            answer: result.answer,
-            option1: result.option1,
-            option2: result.option2,
-            option3: result.option3
+        if (result === null) {
+            res.json(-1)
         }
-        res.json(package);
+        else {
+            res.json(result)
+        }
     })
     .catch((error) => console.error(error));
 })
 
-router.route('/all').get((req, res) => {
-    Question.findAll()
-    .then((results) => res.json(results))
-    .catch((error) => console.error(error));
+router.route('/find').post((req, res) => {
+    Question.findOne({
+        where: {
+            id: req.body.id
+        }
+    })
+        .then((result) => res.json(result))
+        .catch((error) => console.error(error))
+})
+
+router.route('/update').post((req, res) => {
+    Question.update({
+            question: req.body.question,
+            answer: req.body.answer,
+            option1: req.body.option1,
+            option2: req.body.option2,
+            option3: req.body.option3
+        },
+    {
+        where: {
+            id: req.body.id
+        }
+    })
+        .then((result) => res.json(result))
+        .catch((error) => console.error(error))
+})
+
+router.route('/user').post((req, res) => {
+    Question.findAll({
+        where: {
+            username: req.body.username
+        }
+    })
+        .then((results) => res.json(results))
+        .catch((error) => console.error(error))
+})
+
+router.route('/delete').post((req, res) => {
+    Question.destroy({
+        where: {
+            id: req.body.id
+        }
+    })
+        .then(() => res.json("Deleted"))
+        .catch((error) => console.error(error))
 })
 
 router.route('/add').post((req, res) => {
     Question.create({
+        username: req.body.username,
         question: req.body.question,
         answer: req.body.answer,
         option1: req.body.option1,
@@ -35,14 +93,6 @@ router.route('/add').post((req, res) => {
     })
     .then(() => res.json("Added!"))
     .catch((error) => console.error(error));
-})
-
-router.route('/clear').delete((req, res) => {
-    Question.destroy({
-        where: {},
-    })
-    .then(() => res.json("All rows deleted"))
-    .catch((error) => console.error('Failed to delete rows:', error));
 })
 
 module.exports = router;

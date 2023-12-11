@@ -12,11 +12,11 @@ export default function Login({setLoggedUser}) {
             username: userName,
             password: password
         }
-        console.log(payload)
         apis.login(payload)
         .then(res => {
-            if (res.data === 0) {
-                setLoggedUser(userName)
+            if (res.data >= 0) {
+                sessionStorage.setItem('username', userName);
+                setLoggedUser(res.data)
             }
             else {
                 window.alert("Username or Password is incorrect")

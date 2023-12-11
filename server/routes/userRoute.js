@@ -1,12 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/user');
 
-router.route('/').get((req, res) => {
-    User.findAll()
-    .then((results) => res.json(results))
-    .catch((error) => console.error(error));
-})
-
 router.route('/add').post((req, res) => {
     User.create({
         username: req.body.username,
@@ -16,13 +10,23 @@ router.route('/add').post((req, res) => {
     .catch((error) => console.error(error))
 })
 
+router.route('/delete').post((req, res) => {
+    User.destroy({
+        where: {
+            username: req.body.username
+        }
+    })
+        .then(() => res.json("Deleted"))
+        .catch((error) => console.error(error))
+})
+
 router.route('/login').post((req, res) => {
     User.findAndCountAll({
         where: {username: req.body.username, password: req.body.password} 
     })
     .then((result) => {
         if (result.count == 1) {
-            res.json(0)
+            res.json(result.rows[0].dataValues.id)
         }
         else if (result.count > 1) {
             console.log("Multiple users found")

@@ -6,25 +6,14 @@ import Login from './Login';
 import Question from './Question'
 import AppBar from './AppBar'
 import AddQuestion from './AddQuestion'
-
-// function setLoggedUser(username) {
-//   sessionStorage.setItem('username', JSON.stringify(username))
-// }
-
-// function getLoggedUser() {
-//   const userString = sessionStorage.getItem('username')
-//   const userName = JSON.parse(userString)
-//   return userName?.username
-// }
+import Profile from './Profile'
+import EditQuestion from './EditQuestion'
 
 function App() {
   const [loggedUser, setLoggedUser] = useState(null)
-  if (loggedUser === null) {
+  if (sessionStorage.getItem("username") === null) {
     return <Login setLoggedUser={setLoggedUser}/>
   }
-  // if (!loggedUser) {
-  //   return <Login setLoggedUser={setLoggedUser}/>
-  // }
   return (
     <div className="App">
       <BrowserRouter>
@@ -32,6 +21,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Question/>}/>
           <Route path='/add' element={<AddQuestion/>}/>
+          <Route path='/profile' element={<Profile/>}/>
+          <Route path={'/edit/:id'} element={<EditQuestion/>} />
         </Routes>
       </BrowserRouter>
     </div>
