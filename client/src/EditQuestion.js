@@ -26,7 +26,7 @@ function EditQuestion() {
             option3: option3
         }
         apis.updateQuestion(payload)
-            .then(res => {
+            .then(() => {
                 window.alert("Question changed successfully!")
                 navigate('/profile')
             })
@@ -57,7 +57,7 @@ function EditQuestion() {
                 setOption3(res.data.option3)
             })
             .catch(error => console.error(error));
-    }, []);
+    }, [id]);
     return (
         <div className="login-container">
             <h1>Edit Question</h1>
@@ -83,8 +83,8 @@ function EditQuestion() {
             </div>
             <div>
                 <Stack alignItems="row">
-                    <button onClick={event => submit()}>Submit</button>
-                    <button onClick={event => deleteQuestion()}>Delete</button>
+                    <button onClick={() => submit()}>Submit</button>
+                    <button onClick={() => deleteQuestion()}>Delete</button>
                 </Stack>
             </div>
         </div>

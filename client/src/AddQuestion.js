@@ -21,7 +21,7 @@ function AddQuestion() {
             option3: option3
         }
         apis.addQuestion(payload)
-        .then(res => {
+        .then(() => {
             window.alert("Question added successfully!")
             navigate('/')
         })
@@ -50,7 +50,7 @@ function AddQuestion() {
                 <label>Option</label>
                 <input type="text" placeholder="Option 3" onChange={e => setOption3(e.target.value)}/>
             </div>
-            <button onClick={event => submit()}>Submit</button>
+            <button onClick={() => submit()}>Submit</button>
         </div>
     );
 }

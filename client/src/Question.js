@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Question.css"
 import apis from './api.js'
 import IconButton from "@mui/material/IconButton";
@@ -108,7 +107,7 @@ export default function Question() {
             ) : (
                 <div>
                     {loading ? (
-                        <h1>You're out of questions!</h1>
+                        <h1>You&apos;re out of questions!</h1>
                     ) : (
                         <div className="question-div">
                             <h1>{data.question}</h1>

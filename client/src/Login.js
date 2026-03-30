@@ -1,9 +1,11 @@
 // src/Login.js
 import React, {useState} from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import './Login.css';
 import apis from './api.js';
 
 export default function Login({setLoggedUser}) {
+    const navigate = useNavigate();
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
 
@@ -17,6 +19,7 @@ export default function Login({setLoggedUser}) {
             if (res.data >= 0) {
                 sessionStorage.setItem('username', userName);
                 setLoggedUser(res.data)
+                navigate("/");
             }
             else {
                 window.alert("Username or Password is incorrect")
@@ -35,7 +38,10 @@ export default function Login({setLoggedUser}) {
                 <label>Password</label>
                 <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
             </div>
-            <button onClick={event => submit()}>Login</button>
+            <button onClick={() => submit()}>Login</button>
+            <div style={{ marginTop: 12 }}>
+                <Link to="/create-user">Create an account</Link>
+            </div>
         </div>
     );
 }

@@ -7,6 +7,7 @@ const api  = axios.create({
 export const addQuestion = payload => api.post("/question/add", payload);
 export const getQuestion = payload => api.post("/question/", payload);
 export const login = payload => api.post("/user/login", payload);
+export const createUser = payload => api.post("/user/add", payload);
 
 export const addResult = payload => api.post("/result/add", payload)
 export const getReport = payload => api.post("/report/", payload)
@@ -22,6 +23,7 @@ const apis = {
     addQuestion,
     getQuestion,
     login,
+    createUser,
     addResult,
     getReport,
     addReaction,

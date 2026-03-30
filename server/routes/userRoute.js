@@ -2,12 +2,31 @@ const router = require('express').Router();
 const User = require('../models/user');
 
 router.route('/add').post((req, res) => {
-    User.create({
-        username: req.body.username,
-        password: req.body.password
-    })
-    .then(() => res.json("Added!"))
-    .catch((error) => console.error(error))
+    const username = (req.body?.username || "").trim();
+    const password = req.body?.password || "";
+
+    if (!username) {
+        return res.status(400).json({ error: "Username is required" });
+    }
+    if (!password) {
+        return res.status(400).json({ error: "Password is required" });
+    }
+
+    User.create({ username, password })
+        .then((user) => res.status(201).json({ username: user.username }))
+        .catch((error) => {
+            // Common case: duplicate username (SequelizeUniqueConstraintError)
+            if (
+                error?.name === "SequelizeUniqueConstraintError" ||
+                error?.name === "SequelizeValidationError" ||
+                error?.parent?.code === "SQLITE_CONSTRAINT"
+            ) {
+                return res.status(409).json({ error: "Username already exists" });
+            }
+
+            console.error(error);
+            return res.status(500).json({ error: "Failed to create user" });
+        })
 })
 
 router.route('/delete').post((req, res) => {
